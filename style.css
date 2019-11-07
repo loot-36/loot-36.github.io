@@ -1,0 +1,18 @@
+.outputNeuronen {
+  height: 50px;
+  width: 50px;
+  background-color: red;
+  border-radius: 50%;
+  text-align: center;  
+  display: inline-block;
+}
+
+.synapsenWert {
+    height: 50px;
+    width: 50px;
+    background-color: rgb(44, 138, 102);
+    color: rgb(3, 2, 14);
+    border-radius: 50%; 
+    text-align: center;
+    display: inline-block;
+  }
