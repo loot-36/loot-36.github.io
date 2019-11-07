@@ -138,7 +138,7 @@ function aktualisierungTabelle() {
     z.setAttribute("bgcolor",listeHelden[i-1].farbe);
 
 
-    var t = document.createTextNode(listeHelden[i-1].aktivToken);
+    var t = document.createTextNode(listeHelden[i-1].heldenName);
     z.appendChild(t);
     document.getElementById(zeilenNr).appendChild(z);
 
@@ -147,9 +147,9 @@ function aktualisierungTabelle() {
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
     z.setAttribute("align","center");
-    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
 
-    var t = document.createTextNode(listeHelden[i-1].heldenName);
+    var t = document.createTextNode("");
     z.appendChild(t);
     document.getElementById(zeilenNr).appendChild(z);
 
