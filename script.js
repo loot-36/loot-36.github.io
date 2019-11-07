@@ -3,9 +3,9 @@ const anzahlSpalten=4;
 const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
-const listeAktivPunkte= ["Keine Aktion -3", "Bewegung 0", "Luftballern 2", "Taktieren 3", "Körpertreffer 4", "Headshot 6", "Töten 9"];
+const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
 const listeSpaltenNamen= [" Aktivtoken ", " Heldenname ", " Dritte Runde ", " Zweite Runde ", " Erste Runde ", " Aktuelle Punktzahl ", " Aktuelle Aktion ", " Nächste Runde "];
-const listeAktivPunkteZahl= [-3,0,2,3,4,6,9];
+const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
     constructor(heldenName, farbe, aktuellePlazierung) {
