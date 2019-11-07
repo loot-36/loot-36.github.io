@@ -4,7 +4,7 @@ const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= [" Aktivtoken ", " Heldenname ", " Dritte Runde ", " Zweite Runde ", " Erste Runde ", " Aktuelle Punktzahl ", " Aktuelle Aktion ", " Nächste Runde "];
+const listeSpaltenNamen= [" Heldenname ", "    ", " Dritte Runde ", " Zweite Runde ", " Erste Runde ", " Aktuelle Punktzahl ", " Aktuelle Aktion ", " Nächste Runde "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
