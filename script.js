@@ -46,7 +46,7 @@ function heldHinzufuegen() {
 function heldenListeSortieren(){
     listeHelden.sort(function(a,b){
         return  b.rangListenPunkteSort - a.rangListenPunkteSort;
-    }
+    })
 }
 
 function heldEntfernen() {
@@ -302,33 +302,6 @@ function select_gewaehlt(event) {
 
     t= document.getElementById(nummerfeldij);
     t.innerText=listeHelden[nummerHeld-1].gesamtPunktZahl;
-}
-
-
-
-}
-
-function select_gewaehlt(event) {
-
-
-    var nummerHeldstr=event.target.id;
-    nummerHeld=parseInt(nummerHeldstr.slice(12));
-    console.log(nummerHeld);
-
-    var selectwert=parseInt(event.target.value);
-
-    
-    
-    listeHelden[nummerHeld-1].punkteDieseRunde=selectwert;
-    listeHelden[nummerHeld-1].zukuenftigePunktZahl= listeHelden[nummerHeld-1].punkteDieseRunde+listeHelden[nummerHeld-1].listeSchiebeMemory[1]+listeHelden[nummerHeld-1].listeSchiebeMemory[2];
-
-
-    var j=schiebeMemory+beginnSchiebeMemory+2;
-
-    nummerfeldij= "feldnummer" + nummerHeld + j;
-
-    t= document.getElementById(nummerfeldij);
-    t.innerText=listeHelden[nummerHeld-1].zukuenftigePunktZahl;
 }
 
 
