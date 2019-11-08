@@ -46,7 +46,7 @@ function heldHinzufuegen() {
 function heldenListeSortieren(){
     listeHelden.sort(function(a,b){
         return  b.rangListenPunkteSort - a.rangListenPunkteSort;
-    })
+    }
 }
 
 function heldEntfernen() {
