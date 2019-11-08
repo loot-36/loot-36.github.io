@@ -4,7 +4,7 @@ const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= [" Heldenname ", "    ", " Dritte Runde ", " Zweite Runde ", " Erste Runde ", " Aktuelle Punktzahl ", " Aktuelle Aktion ", " Nächste Runde "];
+const listeSpaltenNamen= [" Heldenname ", "    ", " Vorvorletzte Runde ", " Vorletzte Runde ", " Letzte Runde ", "    ", " Aktuelle Punktzahl ", "       ", " Aktuelle Aktion ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
@@ -17,6 +17,8 @@ class held {
         this.rangListenPunkteSort= this.listeSchiebeMemory[0]+this.listeSchiebeMemory[1]+this.listeSchiebeMemory[2]+(1000-aktuellePlazierung)/1000;
         this.aktuellePunktZahl=this.listeSchiebeMemory[0]+this.listeSchiebeMemory[1]+this.listeSchiebeMemory[2];
         this.zukuenftigePunktZahl= this.punkteDieseRunde+this.listeSchiebeMemory[1]+this.listeSchiebeMemory[2];
+        this.gesamtPunktZahl=0;
+        this.gesamtPunktZahlalt=0;
         this.aktivToken=true;
         this.lebend=true;
       }
@@ -74,6 +76,7 @@ function heldenAktualisieren(){
         listeHelden[i].zukuenftigePunktZahl=listeHelden[i].punkteDieseRunde+listeHelden[i].listeSchiebeMemory[1]+listeHelden[i].listeSchiebeMemory[2];
         listeHelden[i].rangListenPunkteSort= listeHelden[i].listeSchiebeMemory[0]+listeHelden[i].listeSchiebeMemory[1]+listeHelden[i].listeSchiebeMemory[2]+(1000-listeHelden[i].aktuellePlazierung)/1000;
         listeHelden[i].aktivToken=true;
+        listeHelden[i].gesamtPunktZahlalt=listeHelden[i].gesamtPunktZahl;
 
     }
 
@@ -166,6 +169,19 @@ function aktualisierungTabelle() {
     }
 
     j=schiebeMemory+beginnSchiebeMemory;
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var t = document.createTextNode("");
+    z.appendChild(t);
+    document.getElementById(zeilenNr).appendChild(z);
+    
+    
+    
+    j=schiebeMemory+beginnSchiebeMemory+1;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
@@ -177,8 +193,19 @@ function aktualisierungTabelle() {
     z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
+    j=schiebeMemory+beginnSchiebeMemory+2;
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var t = document.createTextNode("");
+    z.appendChild(t);
+    document.getElementById(zeilenNr).appendChild(z);
+
     
-    j=schiebeMemory+beginnSchiebeMemory+1;
+    j=schiebeMemory+beginnSchiebeMemory+3;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
@@ -204,7 +231,7 @@ function aktualisierungTabelle() {
     document.getElementById(zeilenNr).appendChild(t);
 
      
-    j=schiebeMemory+beginnSchiebeMemory+2;
+    j=schiebeMemory+beginnSchiebeMemory+4;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
@@ -216,9 +243,66 @@ function aktualisierungTabelle() {
     z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
+    j=schiebeMemory+beginnSchiebeMemory+5;
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var t = document.createTextNode("");
+    z.appendChild(t);
+    document.getElementById(zeilenNr).appendChild(z);
+
+
+    j=schiebeMemory+beginnSchiebeMemory+6;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].gesamtPunktZahl);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
 
   }
 
+
+
+
+}
+
+function select_gewaehlt(event) {
+
+
+    var nummerHeldstr=event.target.id;
+    nummerHeld=parseInt(nummerHeldstr.slice(12));
+    console.log(nummerHeld);
+
+    var selectwert=parseInt(event.target.value);
+
+    
+    
+    listeHelden[nummerHeld-1].punkteDieseRunde=selectwert;
+    listeHelden[nummerHeld-1].zukuenftigePunktZahl= listeHelden[nummerHeld-1].punkteDieseRunde+listeHelden[nummerHeld-1].listeSchiebeMemory[1]+listeHelden[nummerHeld-1].listeSchiebeMemory[2];
+    listeHelden[nummerHeld-1].gesamtPunktZahl=listeHelden[nummerHeld-1].gesamtPunktZahlalt+selectwert;
+
+    var j=schiebeMemory+beginnSchiebeMemory+4;
+
+    nummerfeldij= "feldnummer" + nummerHeld + j;
+
+    t= document.getElementById(nummerfeldij);
+    t.innerText=listeHelden[nummerHeld-1].zukuenftigePunktZahl;
+
+    var j=schiebeMemory+beginnSchiebeMemory+6;
+
+    nummerfeldij= "feldnummer" + nummerHeld + j;
+
+    t= document.getElementById(nummerfeldij);
+    t.innerText=listeHelden[nummerHeld-1].gesamtPunktZahl;
+}
 
 
 
