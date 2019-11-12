@@ -1,12 +1,21 @@
+var startPlazierung=1;
 var anzahlHelden=0;
 var anzahlHeldentot=0;
+var klassenselect=0;
+var farbselect=0;
+const anzahlKlassen=5;
 const anzahlSpalten=4;
 const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
+const listeKlassen=["Alpha", "Jäger", "Techniker", "Heiler", "Wolf"];
+const listeHeldennamen=[["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"]];
+const farbListe=["Gelb", "Rot", "Grau", "Grün"];
+const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
 const listeSpaltenNamen= [" Heldenname ", "    ", " Vorvorletzte Runde ", " Vorletzte Runde ", " Letzte Runde ", "    ", " Aktuelle Punktzahl ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNamentot= [" Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
+const listeSpaltenNameninit=[" Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
@@ -135,19 +144,166 @@ function heldenAktualisieren(){
 
 }
         
-   
+function teamGewaehlt(event){
+    var teamNummerstr=event.target.id;
+    teamNummer=parseInt(teamNummerstr.slice(10));
+    farbselect=teamNummer;
 
-window.onload = function createAllElements() {
-    var x = document.createElement("TABLE");
-    x.setAttribute("id", "myTable");
-    document.body.appendChild(x);
 
-    var x = document.createElement("TABLE");
-    x.setAttribute("id", "myTabletot");
-    document.body.appendChild(x);
+
+
+    var t = document.createElement("SELECT");
+    selectid= "klassenselect";
+    t.setAttribute("id", selectid);
+
+    var k=0;
+    var op = document.createElement("option");
+    op.setAttribute("value", k-1);
+    var temp = document.createTextNode("Heldenklasse Auswählen");
+    op.appendChild(temp);
+    t.appendChild(op);
+
+
+    for (k=1; k<(listeKlassen.length +1); k++) {
+        var op = document.createElement("option");
+        op.setAttribute("value", k-1);
+        var temp = document.createTextNode(listeKlassen[k-1]);
+        op.appendChild(temp);
+        t.appendChild(op);
+    }
+    
+    t.onchange = heldenkonkret;
+    document.body.appendChild(t);
+
+
+
+    
+
+} 
+
+
+function heldenkonkret(event){
+    var selectwert=parseInt(event.target.value);
+    klassenselect=selectwert;
+
+    
+    var t = document.createElement("SELECT");
+    selectid= "heldselect";
+    t.setAttribute("id", selectid);
+
+    var k=0;
+    var op = document.createElement("option");
+    op.setAttribute("value", k-1);
+    var temp = document.createTextNode("Heldennamen");
+    op.appendChild(temp);
+    t.appendChild(op);
+
+
+    for (k=1; k<(listeKlassen.length +1); k++) {
+        var op = document.createElement("option");
+        op.setAttribute("value", k-1);
+        var temp = document.createTextNode(listeHeldennamen[selectwert][k-1]);
+        op.appendChild(temp);
+        t.appendChild(op);
+    }
+    
+    t.onchange = letztendlichHelden;
+    document.body.appendChild(t);
 
 
 }
+
+function letztendlichHelden(event){
+    var selectwert=parseInt(event.target.value);
+
+   
+
+
+    var handleHeld = new held(listeHeldennamen[klassenselect][selectwert],farbListeEnglisch[farbselect],startPlazierung);
+
+    anzahlHelden=listeHelden.push(handleHeld);
+ 
+   
+    startPlazierung=startPlazierung+1;
+    
+    selectid= "klassenselect";
+    var el = document.getElementById(selectid);
+    el.remove();
+
+
+    selectid= "heldselect";
+    var el = document.getElementById(selectid);
+    el.remove();
+
+    aktualisierungTabelleInit();
+
+}
+
+window.onload = function createAllElements() {
+   
+   for (i=0; i<farbListe.length; i++) {
+        var btn = document.createElement("BUTTON");
+        btn.innerHTML= "Team  " + farbListe[i];
+          
+        btn.onclick = teamGewaehlt;
+        buttonid= "teambutton" + i;
+        btn.setAttribute("id", buttonid);
+        document.body.appendChild(btn);
+
+   }
+   var btn = document.createElement("BUTTON");
+   btn.innerHTML= "Beginne Spiel";
+     
+   btn.onclick = starteSpiel;
+   buttonid= "startbutton";
+   btn.setAttribute("id", buttonid);
+   document.body.appendChild(btn);
+
+}
+
+function starteSpiel(){
+    for (i=0; i<farbListe.length; i++) {
+        buttonid= "teambutton" + i;
+        
+        if (document.getElementById(buttonid)) {
+            var el = document.getElementById(buttonid);
+            el.remove();
+           }
+
+   }
+   buttonid= "startbutton";
+   if (document.getElementById(buttonid)) {
+    var el = document.getElementById(buttonid);
+    el.remove();
+   }
+   if (document.getElementById("myTableinit")) {
+    var el = document.getElementById("myTableinit");
+    el.remove();
+   }
+
+   var btn = document.createElement("BUTTON");
+   btn.innerHTML= "Held entfernen";
+     
+   btn.onclick = heldEntfernen;
+   buttonid= "heldentfernen";
+   btn.setAttribute("id", buttonid);
+   document.body.appendChild(btn);
+
+   var btn = document.createElement("BUTTON");
+   btn.innerHTML= "Nächste Runde";
+     
+   btn.onclick = rundeWeiter;
+   buttonid= "naechsterunde";
+   btn.setAttribute("id", buttonid);
+   document.body.appendChild(btn);
+
+
+   aktualisierungTabelle()
+
+}
+
+
+
 
 function aktualisierungTabelle() {
    if (document.getElementById("myTable")) {
@@ -350,7 +506,124 @@ if (anzahlHelden>0){
 
 
 
-function aktualisierungTabelletot() {
+function aktualisierungTabelleInit() {
+    if (document.getElementById("myTableinit")) {
+        var el = document.getElementById("myTableinit");
+        el.remove();
+       }
+   
+  
+  if (listeHelden.length>0) {
+    var x = document.createElement("TABLE");
+    x.setAttribute("id", "myTableinit");
+    x.setAttribute("border", "1px solid black");
+    x.setAttribute("cellPadding", "5px");
+   
+    document.body.appendChild(x);
+  
+  
+    var i=0;
+  
+    var y = document.createElement("TR");
+    zeilenNr = "zeilenNrinit" + i;
+    
+    y.setAttribute("id", zeilenNr);
+    document.getElementById("myTableinit").appendChild(y);
+  
+   
+    for (j=0; j< listeSpaltenNameninit.length; j++){
+      var z = document.createElement("TD");
+      z.setAttribute("align","center");
+      nummerfeldij= "feldnummertot" + i + j;
+      z.setAttribute("id", nummerfeldij);
+  
+      var t = document.createTextNode(listeSpaltenNameninit[j]);
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+    }
+  
+  
+    for (i = 1; i < (listeHelden.length+1); i++) {
+      var y = document.createElement("TR");
+      zeilenNr = "zeilenNrinit" + i;
+      
+      y.setAttribute("id", zeilenNr);
+      document.getElementById("myTableinit").appendChild(y);
+  
+      j=0;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+  
+      var t = document.createTextNode(listeHelden[i-1].heldenName);
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+  
+      j=1;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var t = document.createTextNode("");
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+  
+      
+      
+      
+      
+      j=2;
+  
+      
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var thx = document.createTextNode(listeHelden[i-1].aktuellePlazierung);
+      z.appendChild(thx);
+      document.getElementById(zeilenNr).appendChild(z);
+      
+      j=3;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var t = document.createTextNode("");
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+
+
+
+      j=5;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var t = document.createTextNode("");
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+  
+    }
+  
+}
+  
+  
+  }
+
+
+
+  function aktualisierungTabelletot() {
     if (document.getElementById("myTabletot")) {
         var el = document.getElementById("myTabletot");
         el.remove();
@@ -518,6 +791,7 @@ function statistikSelectUmwandlung(wert){
           
       }
 }
+
 
 
 
