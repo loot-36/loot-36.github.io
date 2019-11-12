@@ -1,15 +1,17 @@
 var startPlazierung=1;
+var anzahlRunden=2;
 var anzahlHelden=0;
 var anzahlHeldentot=0;
 var klassenselect=0;
 var farbselect=0;
+var anzahlinklasse=7;
 const anzahlKlassen=5;
 const anzahlSpalten=4;
 const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["Alpha", "Jäger", "Techniker", "Heiler", "Wolf"];
-const listeHeldennamen=[["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"],["a","b","c","d","e","f","g"]];
+const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher","River Rat","g"],["Einstein","Freak","Funker","Operator","Pawelsky","Scotty","Gearhead"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
@@ -44,7 +46,7 @@ class held {
 var listeHelden = [];
 var listeHeldentot = [];
 
-function heldHinzufuegen() {
+/* function heldHinzufuegen() {
    // Inputfeld öffnen
    var neuHeldenName = prompt("Heldenname");
 
@@ -59,7 +61,7 @@ function heldHinzufuegen() {
    heldenListeSortieren();
    aktualisierungTabelle();
 
-}
+} */
 
 function heldenListeSortieren(){
     listeHelden.sort(function(a,b){
@@ -80,7 +82,7 @@ function heldEntfernen() {
     t.appendChild(op);
 
 
-    for (k=1; k<(anzahlHelden +1); k++) {
+    for (k=1; k<(listeHelden.length +1); k++) {
         var op = document.createElement("option");
         op.setAttribute("value", k-1);
         var temp = document.createTextNode(listeHelden[k-1].heldenName);
@@ -116,17 +118,22 @@ function heldtot(event) {
 function rundeWeiter(){
     heldenAktualisieren();
     heldenListeSortieren();
-    for (i=0; i< anzahlHelden;i++){
+    for (i=0; i< listeHelden.length ;i++){
         listeHelden[i].aktuellePlazierung=i+1;
     }
 
     aktualisierungTabelle();
     aktualisierungTabelletot();
+    anzahlRunden=anzahlRunden +1;
+    buttonid= "naechsterunde";
+    var el = document.getElementById(buttonid);
+
+    el.innerHTML= "Nächste Runde (" + anzahlRunden + ")";
     
 }
 
 function heldenAktualisieren(){
-    for (i=0; i< anzahlHelden;i++){
+    for (i=0; i< listeHelden.length ;i++){
         listeHelden[i].listeSchiebeMemory[0] =  listeHelden[i].listeSchiebeMemory[1];
         listeHelden[i].listeSchiebeMemory[1] =  listeHelden[i].listeSchiebeMemory[2];
         listeHelden[i].listeSchiebeMemory[2] =  listeHelden[i].punkteDieseRunde;
@@ -199,7 +206,7 @@ function heldenkonkret(event){
     t.appendChild(op);
 
 
-    for (k=1; k<(listeKlassen.length +1); k++) {
+    for (k=1; k<(anzahlinklasse +1); k++) {
         var op = document.createElement("option");
         op.setAttribute("value", k-1);
         var temp = document.createTextNode(listeHeldennamen[selectwert][k-1]);
@@ -290,19 +297,43 @@ function starteSpiel(){
    document.body.appendChild(btn);
 
    var btn = document.createElement("BUTTON");
-   btn.innerHTML= "Nächste Runde";
+   btn.innerHTML= "Nächste Runde (" + anzahlRunden + ")";
      
    btn.onclick = rundeWeiter;
    buttonid= "naechsterunde";
    btn.setAttribute("id", buttonid);
    document.body.appendChild(btn);
 
+   var btn = document.createElement("BUTTON");
+   btn.innerHTML= "Spiel beenden";
+     
+   btn.onclick = spielBeenden;
+   buttonid= "spielbeenden";
+   btn.setAttribute("id", buttonid);
+   document.body.appendChild(btn);
 
-   aktualisierungTabelle()
+
+   aktualisierungTabelle();
 
 }
 
+function spielBeenden(){
+while (listeHelden.length >0){
+    heldenhandle=listeHelden.pop();
+    listeHeldentot.push(heldenhandle);
+    //console.log(listeHelden.length);
+    anzahlHelden=anzahlHelden -1;
+    
+}  
+    
+    aktualisierungTabelle();
+    aktualisierungTabelletot();
 
+
+
+
+
+}
 
 
 function aktualisierungTabelle() {
@@ -311,7 +342,7 @@ function aktualisierungTabelle() {
     el.remove();
    }
 
-if (anzahlHelden>0){
+if (listeHelden.length>0){
   var x = document.createElement("TABLE");
   x.setAttribute("id", "myTable");
   x.setAttribute("border", "1px solid black");
@@ -341,7 +372,7 @@ if (anzahlHelden>0){
   }
 
 
-  for (i = 1; i < (anzahlHelden+1); i++) {
+  for (i = 1; i < (listeHelden.length+1); i++) {
     var y = document.createElement("TR");
     zeilenNr = "zeilenNr" + i;
     
@@ -630,7 +661,7 @@ function aktualisierungTabelleInit() {
        }
    
   
-  if (anzahlHeldentot>0) {
+  if (listeHeldentot.length>0) {
     var x = document.createElement("TABLE");
     x.setAttribute("id", "myTabletot");
     x.setAttribute("border", "1px solid black");
@@ -660,7 +691,7 @@ function aktualisierungTabelleInit() {
     }
   
   
-    for (i = 1; i < (anzahlHeldentot+1); i++) {
+    for (i = 1; i < (listeHeldentot.length+1); i++) {
       var y = document.createElement("TR");
       zeilenNr = "zeilenNrtot" + i;
       
@@ -791,7 +822,3 @@ function statistikSelectUmwandlung(wert){
           
       }
 }
-
-
-
-
