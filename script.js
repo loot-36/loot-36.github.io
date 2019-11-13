@@ -11,7 +11,7 @@ const schiebeMemory=3;
 const beginnSchiebeMemory=2;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["Alpha", "Jäger", "Techniker", "Heiler", "Wolf"];
-const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher","River Rat","g"],["Einstein","Freak","Funker","Operator","Pawelsky","Scotty","Gearhead"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
+const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher","River Rat","Sneaker"],["Einstein","Freak","Funker","Operator","Pawelsky","Scotty","Gearhead"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
@@ -99,7 +99,8 @@ function heldEntfernen() {
 function heldtot(event) {
     var heldennummer=parseInt(event.target.value);
 
-    
+    var wert=statistikSelectUmwandlung(listeHelden[heldennummer].punkteDieseRunde);
+    listeHelden[heldennummer].listeEinzelStatistik[wert] = listeHelden[heldennummer].listeEinzelStatistik[wert] +1;
     var listeHeldenNeu = [];
     listeHeldenNeu= listeHelden.slice(0,heldennummer).concat( listeHelden.slice(heldennummer+1) );
     anzahlHeldentot=listeHeldentot.push(listeHelden[heldennummer]);
@@ -320,6 +321,9 @@ function starteSpiel(){
 function spielBeenden(){
 while (listeHelden.length >0){
     heldenhandle=listeHelden.pop();
+    
+    var wert=statistikSelectUmwandlung(heldenhandle.punkteDieseRunde);
+    heldenhandle.listeEinzelStatistik[wert] = heldenhandle.listeEinzelStatistik[wert] +1;
     listeHeldentot.push(heldenhandle);
     //console.log(listeHelden.length);
     anzahlHelden=anzahlHelden -1;
@@ -822,3 +826,4 @@ function statistikSelectUmwandlung(wert){
           
       }
 }
+
