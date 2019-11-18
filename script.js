@@ -5,25 +5,28 @@ var anzahlHeldentot=0;
 var klassenselect=0;
 var farbselect=0;
 var anzahlinklasse=7;
+const imageHeight=25;
+const imageWidth=25;
 const anzahlKlassen=5;
 const anzahlSpalten=4;
 const schiebeMemory=3;
-const beginnSchiebeMemory=2;
+const beginnSchiebeMemory=4;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["Alpha", "Jäger", "Techniker", "Heiler", "Wolf"];
 const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher","River Rat","Sneaker"],["Einstein","Freak","Funker","Operator","Pawelsky","Scotty","Gearhead"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= [" Heldenname ", "    ", " Vorvorletzte Runde ", " Vorletzte Runde ", " Letzte Runde ", "    ", " Aktuelle Punktzahl ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
+const listeSpaltenNamen= [" Icon "," Heldenname ", " Aktuelle Punktzahl ", "    ", " Vorvorletzte Runde ", " Vorletzte Runde ", " Letzte Runde ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNamentot= [" Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNameninit=[" Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
-    constructor(heldenName, farbe, aktuellePlazierung) {
+    constructor(heldenName, farbe, aktuellePlazierung,heldenKlasse) {
         this.heldenName = heldenName;
         this.farbe = farbe;
+        this.heldenKlasse=heldenKlasse;
         this.listeSchiebeMemory = [0,0,0];
         this.aktuellePlazierung = aktuellePlazierung;
         this.punkteDieseRunde=0;
@@ -227,7 +230,7 @@ function letztendlichHelden(event){
    
 
 
-    var handleHeld = new held(listeHeldennamen[klassenselect][selectwert],farbListeEnglisch[farbselect],startPlazierung);
+    var handleHeld = new held(listeHeldennamen[klassenselect][selectwert],farbListeEnglisch[farbselect],startPlazierung,klassenselect);
 
     anzahlHelden=listeHelden.push(handleHeld);
  
@@ -383,7 +386,30 @@ if (listeHelden.length>0){
     y.setAttribute("id", zeilenNr);
     document.getElementById("myTable").appendChild(y);
 
-    j=0;
+    
+    
+    j=0
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+    
+
+
+    
+    var img = new Image();
+    
+    var bildName="Klasse" + listeHelden[i-1].heldenKlasse;
+    img.src = bildName + ".png";
+    img.height= imageHeight;
+    img.width= imageWidth;
+
+    document.getElementById(zeilenNr).appendChild(img);
+    
+    
+    
+    j=1;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -393,9 +419,23 @@ if (listeHelden.length>0){
 
     var t = document.createTextNode(listeHelden[i-1].heldenName);
     z.appendChild(t);
+    document.getElementById(zeilenNr).appendChild(z); 
+
+
+    j=2;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].aktuellePunktZahl);
+    z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
-    j=1;
+
+    j=3;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -428,34 +468,10 @@ if (listeHelden.length>0){
     var t = document.createTextNode("");
     z.appendChild(t);
     document.getElementById(zeilenNr).appendChild(z);
-    
-    
+
+
     
     j=schiebeMemory+beginnSchiebeMemory+1;
-
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var thx = document.createTextNode(listeHelden[i-1].aktuellePunktZahl);
-    z.appendChild(thx);
-    document.getElementById(zeilenNr).appendChild(z);
-
-    j=schiebeMemory+beginnSchiebeMemory+2;
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var t = document.createTextNode("");
-    z.appendChild(t);
-    document.getElementById(zeilenNr).appendChild(z);
-
-    
-    j=schiebeMemory+beginnSchiebeMemory+3;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
@@ -484,6 +500,30 @@ if (listeHelden.length>0){
     t.onchange = select_gewaehlt;
     document.getElementById(zeilenNr).appendChild(t);
 
+    j=schiebeMemory+beginnSchiebeMemory+2;
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var t = document.createTextNode("");
+    z.appendChild(t);
+    document.getElementById(zeilenNr).appendChild(z);
+
+
+    j=schiebeMemory+beginnSchiebeMemory+3;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].zukuenftigePunktZahl);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
+
     j=schiebeMemory+beginnSchiebeMemory+4;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
@@ -504,29 +544,7 @@ if (listeHelden.length>0){
     z.setAttribute("align","center");
     z.setAttribute("bgcolor",listeHelden[i-1].farbe);
 
-    var thx = document.createTextNode(listeHelden[i-1].zukuenftigePunktZahl);
-    z.appendChild(thx);
-    document.getElementById(zeilenNr).appendChild(z);
-
-    j=schiebeMemory+beginnSchiebeMemory+6;
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var t = document.createTextNode("");
-    z.appendChild(t);
-    document.getElementById(zeilenNr).appendChild(z);
-
-
-    j=schiebeMemory+beginnSchiebeMemory+7;
-
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+    
 
     var thx = document.createTextNode(listeHelden[i-1].gesamtPunktZahl);
     z.appendChild(thx);
@@ -857,14 +875,14 @@ function select_gewaehlt(event) {
     listeHelden[nummerHeld-1].zukuenftigePunktZahl= listeHelden[nummerHeld-1].punkteDieseRunde+listeHelden[nummerHeld-1].listeSchiebeMemory[1]+listeHelden[nummerHeld-1].listeSchiebeMemory[2];
     listeHelden[nummerHeld-1].gesamtPunktZahl=listeHelden[nummerHeld-1].gesamtPunktZahlalt+selectwert;
 
-    var j=schiebeMemory+beginnSchiebeMemory+5;
+    var j=schiebeMemory+beginnSchiebeMemory+3;
 
     nummerfeldij= "feldnummer" + nummerHeld + j;
 
     t= document.getElementById(nummerfeldij);
     t.innerText=listeHelden[nummerHeld-1].zukuenftigePunktZahl;
 
-    var j=schiebeMemory+beginnSchiebeMemory+7;
+    var j=schiebeMemory+beginnSchiebeMemory+5;
 
     nummerfeldij= "feldnummer" + nummerHeld + j;
 
