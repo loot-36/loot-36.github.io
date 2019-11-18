@@ -636,7 +636,23 @@ function aktualisierungTabelleInit() {
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
 
+      j=4;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var t = document.createElement("BUTTON");
 
+      buttonid= "upbutton" + i;
+      t.setAttribute("id", buttonid);
+      t.innerHTML="UP";
+      
+      t.onclick = upButton;
+      
+      document.getElementById(zeilenNr).appendChild(t);
+     
 
       j=5;
       var z = document.createElement("TD");
@@ -648,6 +664,23 @@ function aktualisierungTabelleInit() {
       var t = document.createTextNode("");
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
+
+      j=6;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+      var t = document.createElement("BUTTON");
+
+      buttonid= "downbutton" + i;
+      t.setAttribute("id", buttonid);
+      t.innerHTML="DOWN";
+      
+      t.onclick = downButton;
+     
+      document.getElementById(zeilenNr).appendChild(t);
   
     }
   
@@ -656,7 +689,46 @@ function aktualisierungTabelleInit() {
   
   }
 
+function upButton(event){
+    var nummerHeldstr=event.target.id;
+    
+    nummerHeld=parseInt(nummerHeldstr.slice(8));
+    
 
+    if (nummerHeld >1){
+        listeHelden[nummerHeld-1].aktuellePlazierung = listeHelden[nummerHeld-1].aktuellePlazierung -1;
+        listeHelden[nummerHeld-1].rangListenPunkteSort= listeHelden[nummerHeld-1].listeSchiebeMemory[0]+listeHelden[nummerHeld-1].listeSchiebeMemory[1]+listeHelden[nummerHeld-1].listeSchiebeMemory[2]+(1000-listeHelden[nummerHeld-1].aktuellePlazierung)/1000;
+
+        listeHelden[nummerHeld-2].aktuellePlazierung = listeHelden[nummerHeld-2].aktuellePlazierung +1;
+        listeHelden[nummerHeld-2].rangListenPunkteSort= listeHelden[nummerHeld-2].listeSchiebeMemory[0]+listeHelden[nummerHeld-2].listeSchiebeMemory[1]+listeHelden[nummerHeld-2].listeSchiebeMemory[2]+(1000-listeHelden[nummerHeld-2].aktuellePlazierung)/1000;
+        
+        heldenListeSortieren();
+        aktualisierungTabelleInit();
+       
+    }
+
+}
+
+
+function downButton(event){
+    var nummerHeldstr=event.target.id;
+    
+    nummerHeld=parseInt(nummerHeldstr.slice(10));
+    
+
+    if (nummerHeld < listeHelden.length){
+        listeHelden[nummerHeld-1].aktuellePlazierung = listeHelden[nummerHeld-1].aktuellePlazierung +1;
+        listeHelden[nummerHeld-1].rangListenPunkteSort= listeHelden[nummerHeld-1].listeSchiebeMemory[0]+listeHelden[nummerHeld-1].listeSchiebeMemory[1]+listeHelden[nummerHeld-1].listeSchiebeMemory[2]+(1000-listeHelden[nummerHeld-1].aktuellePlazierung)/1000;
+
+        listeHelden[nummerHeld].aktuellePlazierung = listeHelden[nummerHeld].aktuellePlazierung -1;
+        listeHelden[nummerHeld].rangListenPunkteSort= listeHelden[nummerHeld].listeSchiebeMemory[0]+listeHelden[nummerHeld].listeSchiebeMemory[1]+listeHelden[nummerHeld].listeSchiebeMemory[2]+(1000-listeHelden[nummerHeld].aktuellePlazierung)/1000;
+        
+        heldenListeSortieren();
+        aktualisierungTabelleInit();
+       
+    }
+    
+}
 
   function aktualisierungTabelletot() {
     if (document.getElementById("myTabletot")) {
@@ -826,4 +898,3 @@ function statistikSelectUmwandlung(wert){
           
       }
 }
-
