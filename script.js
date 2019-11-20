@@ -13,7 +13,7 @@ const schiebeMemory=3;
 const beginnSchiebeMemory=4;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["Alpha", "Jäger", "Techniker", "Heiler", "Wolf"];
-const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher","River Rat","Sneaker"],["Einstein","Freak","Funker","Operator","Pawelsky","Scotty","Gearhead"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
+const listeHeldennamen=[["Big Ben","Buchhalter","Collector","El Ray","Iron","James","Rider"],["Blood","Bro","Colt","Dancing Queen","Finisher", "Hawk", "River Rat"],["Einstein","Freak","Funker","Gunner","Operator","Pawelsky","Scotty"],["Babyface","Cocaine","Koch","Otto","Poison","Psycho","The Wall"],["Bloodhound","Face","Fox","Jay Jay","Mr Trophy","Nachteule","Speedy"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
@@ -273,6 +273,7 @@ window.onload = function createAllElements() {
 }
 
 function starteSpiel(){
+  if(confirm("Spiel starten?")){
     for (i=0; i<farbListe.length; i++) {
         buttonid= "teambutton" + i;
         
@@ -318,11 +319,12 @@ function starteSpiel(){
 
 
    aktualisierungTabelle();
-
+  }
 }
 
 function spielBeenden(){
-while (listeHelden.length >0){
+  if(confirm("Spiel beenden?")){
+    while (listeHelden.length >0){
     heldenhandle=listeHelden.pop();
     
     var wert=statistikSelectUmwandlung(heldenhandle.punkteDieseRunde);
@@ -331,14 +333,14 @@ while (listeHelden.length >0){
     //console.log(listeHelden.length);
     anzahlHelden=anzahlHelden -1;
     
-}  
+    }  
     
     aktualisierungTabelle();
     aktualisierungTabelletot();
 
 
 
-
+  }
 
 }
 
