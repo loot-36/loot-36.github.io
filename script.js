@@ -3,6 +3,7 @@ var anzahlRunden=2;
 var anzahlHelden=0;
 var anzahlHeldentot=0;
 var klassenselect=0;
+var heldennselect=0;
 var farbselect=0;
 var anzahlinklasse=7;
 const imageHeight=25;
@@ -10,20 +11,21 @@ const imageWidth=25;
 const anzahlKlassen=5;
 const anzahlSpalten=4;
 const schiebeMemory=3;
-const beginnSchiebeMemory=4;
+const beginnSchiebeMemory=5;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF"];
 const listeHeldennamen=[["BIG BEN","BUCHHALTER","COLLECTOR","EL RAY","IRON","JAMES","RIDER"],["BLOOD","BRO","COLT","DANCING QUEEN","FINISHER", "HAWK", "RIVER RAT"],["EINSTEIN","FREAK","FUNKER","GUNNER","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","KOCH","OTTO","POISON","PSYCHO","THE WALL"],["BLOODHOUND","FACE","FOX","JAY JAY","MR TROPHY","NACHTEULE","SPEEDY"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= [" Klasse "," Held ", " Aktuelle Punktzahl ", "    ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
-const listeSpaltenNamentot= [" Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
-const listeSpaltenNameninit=[" Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
+const listeSpaltenNamen= ["  Nummer  ", " Klasse "," Held ", " Aktuelle Punktzahl ", "    ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
+const listeSpaltenNamentot= ["  Nummer  ", " Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
+const listeSpaltenNameninit=["  Nummer  ", " Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
 
 class held {
-    constructor(heldenName, farbe, aktuellePlazierung,heldenKlasse) {
+    constructor(heldenName, farbe, aktuellePlazierung,heldenKlasse, nummerHeld) {
+        this.nummerHeld = nummerHeld;
         this.heldenName = heldenName;
         this.farbe = farbe;
         this.heldenKlasse=heldenKlasse;
@@ -218,8 +220,39 @@ function heldenkonkret(event){
         t.appendChild(op);
     }
     
-    t.onchange = letztendlichHelden;
+    t.onchange = letztendlichHeldenzwischen;
     document.body.appendChild(t);
+
+
+}
+
+function letztendlichHeldenzwischen(event){
+  var selectwert=parseInt(event.target.value);
+  heldennselect=selectwert;
+
+  
+  var t = document.createElement("SELECT");
+  selectid= "heldennummer";
+  t.setAttribute("id", selectid);
+
+  var k=0;
+  var op = document.createElement("option");
+  op.setAttribute("value", k-1);
+  var temp = document.createTextNode("Heldennummer");
+  op.appendChild(temp);
+  t.appendChild(op);
+
+
+  for (k=1; k<5; k++) {
+      var op = document.createElement("option");
+      op.setAttribute("value", k);
+      var temp = document.createTextNode(k);
+      op.appendChild(temp);
+      t.appendChild(op);
+  }
+  
+  t.onchange = letztendlichHelden;
+  document.body.appendChild(t);
 
 
 }
@@ -230,7 +263,7 @@ function letztendlichHelden(event){
    
 
 
-    var handleHeld = new held(listeHeldennamen[klassenselect][selectwert],farbListeEnglisch[farbselect],startPlazierung,klassenselect);
+    var handleHeld = new held(listeHeldennamen[klassenselect][heldennselect],farbListeEnglisch[farbselect],startPlazierung,klassenselect,selectwert);
 
     anzahlHelden=listeHelden.push(handleHeld);
  
@@ -243,6 +276,10 @@ function letztendlichHelden(event){
 
 
     selectid= "heldselect";
+    var el = document.getElementById(selectid);
+    el.remove();
+
+    selectid= "heldennummer";
     var el = document.getElementById(selectid);
     el.remove();
 
@@ -389,8 +426,20 @@ if (listeHelden.length>0){
     document.getElementById("myTable").appendChild(y);
 
     
+    j=0;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].nummerHeld);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
     
-    j=0
+
+    j=1
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -411,7 +460,7 @@ if (listeHelden.length>0){
     
     
     
-    j=1;
+    j=2;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -424,20 +473,22 @@ if (listeHelden.length>0){
     document.getElementById(zeilenNr).appendChild(z); 
 
 
-    j=2;
+    j=3;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
     z.setAttribute("align","center");
     z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+    //z.setAttribute("font-weight","bold");
 
     var thx = document.createTextNode(listeHelden[i-1].aktuellePunktZahl);
+    //thx.setAttribute('font-weight','bold');
     z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
 
-    j=3;
+    j=4;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -613,11 +664,24 @@ function aktualisierungTabelleInit() {
       z.setAttribute("bgcolor",listeHelden[i-1].farbe);
   
   
+      var t = document.createTextNode(listeHelden[i-1].nummerHeld);
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+
+
+      j=1;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummerinit" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+  
+  
       var t = document.createTextNode(listeHelden[i-1].heldenName);
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
   
-      j=1;
+      j=2;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummerinit" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -632,7 +696,7 @@ function aktualisierungTabelleInit() {
       
       
       
-      j=2;
+      j=3;
   
       
       var z = document.createElement("TD");
@@ -645,7 +709,7 @@ function aktualisierungTabelleInit() {
       z.appendChild(thx);
       document.getElementById(zeilenNr).appendChild(z);
       
-      j=3;
+      j=4;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummerinit" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -656,7 +720,7 @@ function aktualisierungTabelleInit() {
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
 
-      j=4;
+      j=5;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummerinit" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -674,7 +738,7 @@ function aktualisierungTabelleInit() {
       document.getElementById(zeilenNr).appendChild(t);
      
 
-      j=5;
+      j=6;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummerinit" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -685,7 +749,7 @@ function aktualisierungTabelleInit() {
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
 
-      j=6;
+      j=7;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummerinit" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -794,7 +858,22 @@ function downButton(event){
       y.setAttribute("id", zeilenNr);
       document.getElementById("myTabletot").appendChild(y);
   
+
       j=0;
+      var z = document.createElement("TD");
+      nummerfeldij= "feldnummertot" + i + j;
+      z.setAttribute("id", nummerfeldij);
+      z.setAttribute("align","center");
+      z.setAttribute("bgcolor",listeHeldentot[i-1].farbe);
+  
+  
+      var t = document.createTextNode(listeHeldentot[i-1].nummerHeld);
+      z.appendChild(t);
+      document.getElementById(zeilenNr).appendChild(z);
+
+
+
+      j=1;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummertot" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -806,7 +885,7 @@ function downButton(event){
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
   
-      j=1;
+      j=2;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummertot" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -817,7 +896,7 @@ function downButton(event){
       z.appendChild(t);
       document.getElementById(zeilenNr).appendChild(z);
   
-      for (j = 2; j < (listeHeldentot[i-1].listeEinzelStatistik.length+2); j++) {
+      for (j = 3; j < (listeHeldentot[i-1].listeEinzelStatistik.length+3); j++) {
           var z = document.createElement("TD");
           nummerfeldij= "feldnummertot" + i + j;
           z.setAttribute("id", nummerfeldij);
@@ -829,7 +908,7 @@ function downButton(event){
           document.getElementById(zeilenNr).appendChild(z);
       }
   
-      j=listeHeldentot[i-1].listeEinzelStatistik.length+2;
+      j=listeHeldentot[i-1].listeEinzelStatistik.length+3;
       var z = document.createElement("TD");
       nummerfeldij= "feldnummertot" + i + j;
       z.setAttribute("id", nummerfeldij);
@@ -842,7 +921,7 @@ function downButton(event){
       
       
       
-      j=listeHeldentot[i-1].listeEinzelStatistik.length+3;
+      j=listeHeldentot[i-1].listeEinzelStatistik.length+4;
   
       
       var z = document.createElement("TD");
