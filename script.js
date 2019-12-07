@@ -5,16 +5,16 @@ var anzahlHeldentot=0;
 var klassenselect=0;
 var heldennselect=0;
 var farbselect=0;
-var anzahlinklasse=7;
+var anzahlinklasse=8;
 const imageHeight=25;
 const imageWidth=25;
-const anzahlKlassen=5;
+const anzahlKlassen=7;
 const anzahlSpalten=4;
 const schiebeMemory=3;
 const beginnSchiebeMemory=5;
 const optionenAnzahlPunkte=7;
-const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF"];
-const listeHeldennamen=[["BIG BEN","BUCHHALTER","COLLECTOR","EL RAY","IRON","JAMES","RIDER"],["BLOOD","BRO","COLT","DANCING QUEEN","FINISHER", "HAWK", "RIVER RAT"],["EINSTEIN","FREAK","FUNKER","GUNNER","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","KOCH","OTTO","POISON","PSYCHO","THE WALL"],["BLOODHOUND","FACE","FOX","JAY JAY","MR TROPHY","NACHTEULE","SPEEDY"]];
+const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF", "GUARDIAN", "GLOREICHEN"];
+const listeHeldennamen=[["BUCHHALTER", "CAPTAIN", "COLLECTOR","EL RAY","IRON","JAMES", "LONER", "RIDER"],["BLOOD","BRO","COLT","CONTRACTOR","DANCING QUEEN","FINISHER", "HAWK", "SHOOTER"],["EINSTEIN","FUNKER","GEIER","GUNNER","MISTER MATRUSCHKA","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","CRAZY DOC","KOCH","OTTO","POISON","PSYCHO","VALERIAN"],["BANKIER","BLOODHOUND","BUDDY","DUSTY","FOX","MR TROPHY","NACHTEULE","SPEEDY"],["ANGEL","DAVID","DISTRACTOR","EAGLE EYE","GOLIATH","JOHNNY","SAVIOR","SPARTACUS"],["ADAM","CHAOS","STALKER","A","B","C","D","E"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
@@ -903,7 +903,7 @@ function downButton(event){
           z.setAttribute("align","center");
           z.setAttribute("bgcolor",listeHeldentot[i-1].farbe);
       
-          var t = document.createTextNode(listeHeldentot[i-1].listeEinzelStatistik[j-2]);
+          var t = document.createTextNode(listeHeldentot[i-1].listeEinzelStatistik[j-3]);
           z.appendChild(t);
           document.getElementById(zeilenNr).appendChild(z);
       }
