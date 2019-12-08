@@ -11,14 +11,14 @@ const imageWidth=25;
 const anzahlKlassen=7;
 const anzahlSpalten=4;
 const schiebeMemory=3;
-const beginnSchiebeMemory=5;
+const beginnSchiebeMemory=6;
 const optionenAnzahlPunkte=7;
 const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF", "GUARDIAN", "GLOREICHEN"];
-const listeHeldennamen=[["BUCHHALTER", "CAPTAIN", "COLLECTOR","EL RAY","IRON","JAMES", "LONER", "RIDER"],["BLOOD","BRO","COLT","CONTRACTOR","DANCING QUEEN","FINISHER", "HAWK", "SHOOTER"],["EINSTEIN","FUNKER","GEIER","GUNNER","MISTER MATRUSCHKA","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","CRAZY DOC","KOCH","OTTO","POISON","PSYCHO","VALERIAN"],["BANKIER","BLOODHOUND","BUDDY","DUSTY","FOX","MR TROPHY","NACHTEULE","SPEEDY"],["ANGEL","DAVID","DISTRACTOR","EAGLE EYE","GOLIATH","JOHNNY","SAVIOR","SPARTACUS"],["ADAM","CHAOS","STALKER","A","B","C","D","E"]];
+const listeHeldennamen=[["BUCHHALTER", "CAPTAIN", "COLLECTOR","EL RAY","IRON","JAMES", "LONER", "RIDER"],["BLOOD","BRO","COLT","CONTRACTOR","DANCING QUEEN","FINISHER", "HAWK", "SHOOTER"],["EINSTEIN","FUNKER","GEIER","GUNNER","MISTER MATRUSCHKA","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","CRAZY DOC","KOCH","OTTO","POISON","PSYCHO","VALERIAN"],["BANKIER","BLOODHOUND","BUDDY","DUSTY","FOX","MR TROPHY","NACHTEULE","SPEEDY"],["ANGEL","DAVID","DISTRACTOR","EAGLE EYE","GOLIATH","JOHNNY","SAVIOR","SPARTACUS"],["ADAM","CHAOS","STALKER","BIG BEN","B","C","D","E"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
 const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= ["  Nummer  ", " Klasse "," Held ", " Aktuelle Punktzahl ", "    ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion " , "       ", " Nächste Runde ",  "       ", " Gesamtpunktzahl "];
+const listeSpaltenNamen= [" Klasse ", " Nummer "," Held ", " Aktuelle Punktzahl ", " Nächste Runde ", "       ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNamentot= ["  Nummer  ", " Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNameninit=["  Nummer  ", " Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
 const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
@@ -427,19 +427,6 @@ if (listeHelden.length>0){
 
     
     j=0;
-
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var thx = document.createTextNode(listeHelden[i-1].nummerHeld);
-    z.appendChild(thx);
-    document.getElementById(zeilenNr).appendChild(z);
-    
-
-    j=1
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -458,7 +445,17 @@ if (listeHelden.length>0){
 
     document.getElementById(zeilenNr).appendChild(img);
     
-    
+    j=1;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].nummerHeld);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
     
     j=2;
     var z = document.createElement("TD");
@@ -487,8 +484,20 @@ if (listeHelden.length>0){
     z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
-
     j=4;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+
+    var thx = document.createTextNode(listeHelden[i-1].zukuenftigePunktZahl);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
+
+
+    j=5;
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
     z.setAttribute("id", nummerfeldij);
@@ -564,32 +573,9 @@ if (listeHelden.length>0){
     z.appendChild(t);
     document.getElementById(zeilenNr).appendChild(z);
 
+    
 
     j=schiebeMemory+beginnSchiebeMemory+3;
-
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var thx = document.createTextNode(listeHelden[i-1].zukuenftigePunktZahl);
-    z.appendChild(thx);
-    document.getElementById(zeilenNr).appendChild(z);
-
-    j=schiebeMemory+beginnSchiebeMemory+4;
-    var z = document.createElement("TD");
-    nummerfeldij= "feldnummer" + i + j;
-    z.setAttribute("id", nummerfeldij);
-    z.setAttribute("align","center");
-    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
-
-    var t = document.createTextNode("");
-    z.appendChild(t);
-    document.getElementById(zeilenNr).appendChild(z);
-
-
-    j=schiebeMemory+beginnSchiebeMemory+5;
 
     var z = document.createElement("TD");
     nummerfeldij= "feldnummer" + i + j;
