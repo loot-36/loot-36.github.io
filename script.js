@@ -1,3 +1,4 @@
+var action=false;
 var startPlazierung=1;
 var anzahlRunden=2;
 var anzahlHelden=0;
@@ -122,6 +123,19 @@ function heldtot(event) {
 
 
 function rundeWeiter(){
+    var alleNeun=true;
+    for (i=0; i< listeHelden.length ;i++){
+      if (listeHelden[i].aktuellePunktZahl!=9){
+        alleNeun=false;
+        if (listeHelden[i].aktuellePunktZahl>9){
+          action=true;
+        }
+      };
+    }
+    if (action && alleNeun){
+      alert("Neun Punkte Regel!!!");
+    }
+  
     heldenAktualisieren();
     heldenListeSortieren();
     for (i=0; i< listeHelden.length ;i++){
