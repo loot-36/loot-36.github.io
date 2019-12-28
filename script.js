@@ -9,20 +9,22 @@ var farbselect=0;
 var anzahlinklasse=8;
 const imageHeight=25;
 const imageWidth=25;
-const anzahlKlassen=7;
+const anzahlKlassen=8;
 const anzahlSpalten=4;
 const schiebeMemory=3;
 const beginnSchiebeMemory=6;
-const optionenAnzahlPunkte=7;
-const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF", "GUARDIAN", "GLOREICHEN"];
-const listeHeldennamen=[["BUCHHALTER", "CAPTAIN", "COLLECTOR","EL RAY","IRON","JAMES", "LONER", "RIDER"],["BLOOD","BRO","COLT","CONTRACTOR","DANCING QUEEN","FINISHER", "HAWK", "SHOOTER"],["EINSTEIN","FUNKER","GEIER","GUNNER","MISTER MATRUSCHKA","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","CRAZY DOC","KOCH","OTTO","POISON","PSYCHO","VALERIAN"],["BANKIER","BLOODHOUND","BUDDY","DUSTY","FOX","MR TROPHY","NACHTEULE","SPEEDY"],["ANGEL","DAVID","DISTRACTOR","EAGLE EYE","GOLIATH","JOHNNY","SAVIOR","SPARTACUS"],["ADAM","CHAOS","STALKER","BIG BEN","B","C","D","E"]];
+const optionenAnzahlPunkte=9;
+const listeKlassen=["ALPHA", "JÄGER", "TECHNIKER", "HEILER", "WOLF", "GUARDIAN", "GLOREICHEN", "SCHAKAL"];
+const listeHeldennamen=[["BUCHHALTER", "CAPTAIN", "COLLECTOR","EL RAY","IRON","JAMES", "LONER", "RIDER"],["BLOOD","BRO","COLT","CONTRACTOR","DANCING QUEEN","FINISHER", "HAWK", "SHOOTER"],["EINSTEIN","FUNKER","GEIER","GUNNER","MISTER MATRUSCHKA","OPERATOR","PAWELSKY","SCOTTY"],["BABYFACE","COCAINE","CRAZY DOC","KOCH","OTTO","POISON","PSYCHO","VALERIAN"],["BANKIER","BLOODHOUND","BUDDY","DUSTY","FOX","MR TROPHY","NACHTEULE","SPEEDY"],["ANGEL","DAVID","DISTRACTOR","EAGLE EYE","GOLIATH","JOHNNY","SAVIOR","SPARTACUS"],["ADAM","BIG BEN","BIOTECH","CHAMÄLEON","CHAOS","DISCONECTOR","FLASH","STALKER"],["EL PATRON","FRANCOISE","GOLDDIGGER","HITMAN","JACK","MOON","SCAR","SENSEI"]];
 const farbListe=["Gelb", "Rot", "Grau", "Grün"];
 const farbListeEnglisch=["yellow", "red", "gray", "green"];
-const listeAktivPunkte= ["Keine Aktion 0", "Bewegung 3", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
-const listeSpaltenNamen= [" Klasse ", " Nummer "," Held ", " Aktuelle Punktzahl ", " Nächste Runde ", "       ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion ",  "       ", " Gesamtpunktzahl "];
-const listeSpaltenNamentot= ["  Nummer  ", " Heldenname ", "    ", " Keine Aktion ", " Bewegung ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
+const listeAktivPunkte= ["Keine Aktion 0", "Lauern 1", "Bewegung 2", "Schießerei 4", "Luftballern 5", "Taktieren 6", "Körpertreffer 7", "Headshot 9", "Töten 12"];
+const listeSpaltenNamen= [" Klasse ", " Nummer "," Held ", " Aktuelle Punktzahl ", " Nächste Runde ", "       ", " Runde -3 ", " Runde -2 ", " Runde -1 ", "       ", " Aktuelle Aktion ",  "       ", " Gesamtpunktzahl ", "Aktivmodus"];
+const listeSpaltenNamentot= ["  Nummer  ", " Heldenname ", "    ", " Keine Aktion ", " Lauern ", " Bewegung ", " Schießerei ", " Luftballern ", " Taktieren ", " Körpertreffer ", " Headshot ", " Töten ",  "       ", " Gesamtpunktzahl "];
 const listeSpaltenNameninit=["  Nummer  ", " Heldenname ","    ","  Plazierung  ", "    ","  Up  ","    ","  Down  "];
-const listeAktivPunkteZahl= [0,3,5,6,7,9,12];
+const listeAktivPunkteZahl= [0,1,2,4,5,6,7,9,12];
+const modusListe=["aktiv","lauern","passiv"];
+const modusFarben=["green","yellow","red"];
 
 class held {
     constructor(heldenName, farbe, aktuellePlazierung,heldenKlasse, nummerHeld) {
@@ -46,6 +48,7 @@ class held {
         }
         this.aktivToken=true;
         this.lebend=true;
+        this.aktivmodus=0;
       }
 
 }
@@ -105,8 +108,10 @@ function heldEntfernen() {
 function heldtot(event) {
     var heldennummer=parseInt(event.target.value);
 
-    var wert=statistikSelectUmwandlung(listeHelden[heldennummer].punkteDieseRunde);
-    listeHelden[heldennummer].listeEinzelStatistik[wert] = listeHelden[heldennummer].listeEinzelStatistik[wert] +1;
+    if (listeHelden[heldennummer].punkteDieseRunde > 0) {
+      var wert=statistikSelectUmwandlung(listeHelden[heldennummer].punkteDieseRunde);
+      listeHelden[heldennummer].listeEinzelStatistik[wert] = listeHelden[heldennummer].listeEinzelStatistik[wert] +1;
+    }
     var listeHeldenNeu = [];
     listeHeldenNeu= listeHelden.slice(0,heldennummer).concat( listeHelden.slice(heldennummer+1) );
     anzahlHeldentot=listeHeldentot.push(listeHelden[heldennummer]);
@@ -166,6 +171,7 @@ function heldenAktualisieren(){
         listeHelden[i].rangListenPunkteSort= listeHelden[i].listeSchiebeMemory[0]+listeHelden[i].listeSchiebeMemory[1]+listeHelden[i].listeSchiebeMemory[2]+(1000-listeHelden[i].aktuellePlazierung)/1000;
         listeHelden[i].aktivToken=true;
         listeHelden[i].gesamtPunktZahlalt=listeHelden[i].gesamtPunktZahl;
+        listeHelden[i].aktivmodus=0;
 
     }
 
@@ -345,7 +351,7 @@ function starteSpiel(){
    }
 
    var btn = document.createElement("BUTTON");
-   btn.innerHTML= "Held entfernen";
+   btn.innerHTML= "Held Tod";
      
    btn.onclick = heldEntfernen;
    buttonid= "heldentfernen";
@@ -378,8 +384,10 @@ function spielBeenden(){
     while (listeHelden.length >0){
     heldenhandle=listeHelden.pop();
     
-    var wert=statistikSelectUmwandlung(heldenhandle.punkteDieseRunde);
-    heldenhandle.listeEinzelStatistik[wert] = heldenhandle.listeEinzelStatistik[wert] +1;
+    if (heldenhandle.punkteDieseRunde>0) {
+      var wert=statistikSelectUmwandlung(heldenhandle.punkteDieseRunde);
+      heldenhandle.listeEinzelStatistik[wert] = heldenhandle.listeEinzelStatistik[wert] +1;
+    }
     listeHeldentot.push(heldenhandle);
     //console.log(listeHelden.length);
     anzahlHelden=anzahlHelden -1;
@@ -603,6 +611,27 @@ if (listeHelden.length>0){
     z.appendChild(thx);
     document.getElementById(zeilenNr).appendChild(z);
 
+
+    j=schiebeMemory+beginnSchiebeMemory+4;
+
+    var z = document.createElement("TD");
+    nummerfeldij= "feldnummer" + i + j;
+    z.setAttribute("id", nummerfeldij);
+    z.setAttribute("align","center");
+    //z.setAttribute("bgcolor",listeHelden[i-1].farbe);
+ 
+    
+    
+    var thx = document.createElement("BUTTON");
+    
+    thx.innerHTML = modusListe[listeHelden[i-1].aktivmodus];
+    thx.style.color = modusFarben[listeHelden[i-1].aktivmodus];
+    thx.onclick = modusbutton;
+    buttonid= "modusbutton" + i;
+    thx.setAttribute("id", buttonid);
+    z.appendChild(thx);
+    document.getElementById(zeilenNr).appendChild(z);
+
   }
 
 }
@@ -610,6 +639,22 @@ if (listeHelden.length>0){
 
 }
 
+  
+function modusbutton(event){
+  var buttonNummerstr=event.target.id;
+   var buttonNummer=parseInt(buttonNummerstr.slice(11));
+
+   if (listeHelden[buttonNummer-1].aktivmodus<2) {
+    listeHelden[buttonNummer-1].aktivmodus=2;
+   }
+   else {
+    listeHelden[buttonNummer-1].aktivmodus=0;
+   }
+
+   var button=document.getElementById(buttonNummerstr);
+   button.innerHTML = modusListe[listeHelden[buttonNummer-1].aktivmodus];
+   button.style.color = modusFarben[listeHelden[buttonNummer-1].aktivmodus];
+}
 
 
 function aktualisierungTabelleInit() {
@@ -950,6 +995,16 @@ function select_gewaehlt(event) {
 
     var selectwert=parseInt(event.target.value);
 
+    if (selectwert==1){
+      listeHelden[nummerHeld-1].aktivmodus=1;
+    } else {
+      listeHelden[nummerHeld-1].aktivmodus=2;
+    }
+
+    var buttonNummerstr="modusbutton" + nummerHeld;
+    var button=document.getElementById(buttonNummerstr);
+    button.innerHTML = modusListe[listeHelden[nummerHeld-1].aktivmodus];
+    button.style.color = modusFarben[listeHelden[nummerHeld-1].aktivmodus];
     
     
     listeHelden[nummerHeld-1].punkteDieseRunde=selectwert;
@@ -972,7 +1027,7 @@ function select_gewaehlt(event) {
 }
 
 function statistikSelectUmwandlung(wert){
-    listeAktivPunkteZahl[1]
+    
     switch (wert) {
         case listeAktivPunkteZahl[0]:
                 return 0;
@@ -994,6 +1049,10 @@ function statistikSelectUmwandlung(wert){
 
         case listeAktivPunkteZahl[6]:
                 return 6;
-          
+
+        case listeAktivPunkteZahl[7]:
+                return 7;
+        case listeAktivPunkteZahl[8]:
+                return 8;  
       }
 }
